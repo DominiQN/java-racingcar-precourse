@@ -13,4 +13,8 @@ public class Car {
         this.name = name;
         this.strategy = strategy;
     }
+
+    public CarName getName() {
+        return this.name;
+    }
 }
