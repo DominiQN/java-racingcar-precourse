@@ -2,6 +2,7 @@ package racingcar.domain.racing;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.util.Arrays;
@@ -48,6 +49,19 @@ class RacingTest {
         final int movingTrials = 1;
         assertThatIllegalArgumentException()
                 .isThrownBy(() -> new Racing(carNames, movingTrials, carMovingStrategy));
+    }
+
+    @DisplayName("생성 시 주어진 경주 시도 횟수를 초과하여 경기를 진행할 수 없다.")
+    @Test
+    void raceCountShouldNotExceedMovingTrialCount() {
+        final Racing racing = Fixtures.createRacing(1, "pobi", "crong");
+
+        racing.raceOnce();
+
+        assertThatIllegalStateException()
+                .isThrownBy(racing::raceOnce)
+                .withMessage("경주 시도 횟수를 초과하였습니다!");
+
     }
 
     @DisplayName("경주를 진행하면 진행한 결과에 대한 자동차의 상태들이 반환된다.")

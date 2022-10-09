@@ -6,14 +6,15 @@ import racingcar.domain.car.CarMovingStrategy;
 public class Racing {
     private final RacingCars racingCars;
 
-    private final MovingTrialCount movingTrialCount;
+    private final RacingTrialCounter racingTrialCounter;
 
     public Racing(List<String> carNames, int movingTrials, CarMovingStrategy carMovingStrategy) {
         this.racingCars = RacingCars.createdBy(carNames, carMovingStrategy);
-        this.movingTrialCount = new MovingTrialCount(movingTrials);
+        this.racingTrialCounter = new RacingTrialCounter(movingTrials);
     }
 
     public CarStatuses raceOnce() {
+        racingTrialCounter.incrementTrialCount();
         return racingCars.moveAll();
     }
 }
