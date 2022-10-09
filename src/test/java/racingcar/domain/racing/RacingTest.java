@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static racingcar.domain.Fixtures.createCarStatus;
 import static racingcar.domain.Utils.repeat;
 
 import java.util.Arrays;
@@ -94,5 +95,30 @@ class RacingTest {
         final boolean actual = racing.isFinished();
 
         assertThat(actual).isEqualTo(expected);
+    }
+
+    @DisplayName("경주가 끝나기 전에는 최종 우승자를 알 수 없다.")
+    @Test
+    void shouldNotKnowWinnersBeforeFinished() {
+        final Racing racing = Fixtures.createRacing(2, "pobi", "crong");
+
+        assertThatIllegalStateException()
+                .isThrownBy(racing::getWinners)
+                .withMessage("The racing is not finished!");
+    }
+
+    @DisplayName("최종 우승자 목록을 알 수 있다.")
+    @Test
+    void winners() {
+        final Racing racing = Fixtures.createRacing(1, "pobi", "crong");
+        racing.raceOnce();
+        final List<CarStatus> expected = Arrays.asList(
+                createCarStatus("pobi", 1),
+                createCarStatus("crong", 1)
+        );
+
+        final CarStatuses winners = racing.getWinners();
+
+        assertThat(winners.toList()).containsExactlyInAnyOrderElementsOf(expected);
     }
 }

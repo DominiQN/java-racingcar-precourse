@@ -3,6 +3,7 @@ package racingcar.domain;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import racingcar.domain.car.Car;
 import racingcar.domain.car.CarMovingStrategy;
 import racingcar.domain.car.CarName;
 import racingcar.domain.car.Distance;
@@ -30,5 +31,11 @@ public class Fixtures {
     public static Racing createRacing(int movingTrials, String... carNames) {
         final List<String> nameList = Arrays.asList(carNames);
         return new Racing(nameList, movingTrials, Fixtures.ALWAYS_FORWARD_ONE_STRATEGY);
+    }
+
+    public static Car createCar(String name, int distance) {
+        final Car car = new Car(new CarName(name), new AlwaysForwardStrategy(distance));
+        car.move();
+        return car;
     }
 }

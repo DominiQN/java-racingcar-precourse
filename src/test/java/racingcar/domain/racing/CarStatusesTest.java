@@ -3,6 +3,7 @@ package racingcar.domain.racing;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static racingcar.domain.Fixtures.carStatusesOf;
+import static racingcar.domain.Fixtures.createCarStatus;
 
 import java.util.Arrays;
 import java.util.List;
@@ -43,5 +44,25 @@ class CarStatusesTest {
         final List<CarStatus> actual = statuses.toList();
 
         assertThat(actual).containsExactlyElementsOf(expected);
+    }
+
+    @DisplayName("현재 위치가 가장 높은 자동차 상태만을 받을 수 있다.")
+    @Test
+    void filterHighestDistanceStatuses() {
+        final List<CarStatus> carStatusList = Arrays.asList(
+                createCarStatus("aWin", 4),
+                createCarStatus("bLose", 2),
+                createCarStatus("cLose", 0),
+                createCarStatus("dWin", 4)
+        );
+        final CarStatuses carStatuses = new CarStatuses(carStatusList);
+        final List<CarStatus> expected = Arrays.asList(
+                createCarStatus("aWin", 4),
+                createCarStatus("dWin", 4)
+        );
+
+        final CarStatuses actual = carStatuses.filterHighestDistanceCars();
+
+        assertThat(actual.toList()).containsExactlyInAnyOrderElementsOf(expected);
     }
 }

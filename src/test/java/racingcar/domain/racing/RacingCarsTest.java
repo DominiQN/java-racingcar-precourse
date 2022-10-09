@@ -3,8 +3,10 @@ package racingcar.domain.racing;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatNoException;
+import static racingcar.domain.Fixtures.createCarStatus;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -52,5 +54,19 @@ class RacingCarsTest {
         final CarStatuses actual = cars.moveAll();
 
         assertThat(actual).isEqualTo(expected);
+    }
+
+    @DisplayName("가장 높은 현재 위치를 가진 자동차의 상태 목록을 알 수 있다.")
+    @Test
+    void highestCarStatuses() {
+        final Car higher = Fixtures.createCar("high", 4);
+        final Car lower = Fixtures.createCar("low", 3);
+        final List<Car> carList = Arrays.asList(lower, higher);
+        final RacingCars cars = new RacingCars(carList);
+        final List<CarStatus> expected = Collections.singletonList(createCarStatus("high", 4));
+
+        final CarStatuses actual = cars.filterHighestDistanceCars();
+
+        assertThat(actual.toList()).isEqualTo(expected);
     }
 }

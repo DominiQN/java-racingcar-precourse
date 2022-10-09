@@ -21,4 +21,15 @@ public class Racing {
     public boolean isFinished() {
         return racingTrialCounter.isReachingTrialLimit();
     }
+
+    private boolean isNotFinished() {
+        return !isFinished();
+    }
+
+    public CarStatuses getWinners() {
+        if (isNotFinished()) {
+            throw new IllegalStateException("The racing is not finished!");
+        }
+        return racingCars.filterHighestDistanceCars();
+    }
 }

@@ -7,9 +7,9 @@ import racingcar.domain.car.Car;
 import racingcar.domain.car.CarName;
 import racingcar.domain.car.Distance;
 
-public class CarStatus {
+public class CarStatus implements Comparable<CarStatus> {
     private final String carName;
-    private final int distanceFromStartingPoint;
+    private final Integer distanceFromStartingPoint;
 
     public CarStatus(CarName carName, Distance distanceFromStartingPoint) {
         requireNotNull(carName, "The car name should not be null!");
@@ -41,11 +41,17 @@ public class CarStatus {
             return false;
         }
         CarStatus carStatus = (CarStatus) o;
-        return distanceFromStartingPoint == carStatus.distanceFromStartingPoint && carName.equals(carStatus.carName);
+        return carName.equals(carStatus.carName)
+                && distanceFromStartingPoint.equals(carStatus.distanceFromStartingPoint);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(carName, distanceFromStartingPoint);
+    }
+
+    @Override
+    public int compareTo(CarStatus other) {
+        return this.distanceFromStartingPoint.compareTo(other.distanceFromStartingPoint);
     }
 }

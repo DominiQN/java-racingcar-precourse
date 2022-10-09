@@ -9,6 +9,7 @@ import racingcar.domain.car.CarMovingStrategy;
 import racingcar.domain.car.CarName;
 
 public class RacingCars {
+    private static final int FIRST_ELEMENT = 0;
     private final List<Car> elements;
 
     public RacingCars(List<Car> elements) {
@@ -38,17 +39,27 @@ public class RacingCars {
     }
 
     public CarStatuses moveAll() {
+        moveAllCars();
+        return getCurrentCarStatuses();
+    }
+
+    private void moveAllCars() {
+        for (Car car : this.elements) {
+            car.move();
+        }
+    }
+
+    private CarStatuses getCurrentCarStatuses() {
         final List<CarStatus> currentStatuses = new ArrayList<>();
         for (Car car : this.elements) {
-            final CarStatus result = moveAndGetResult(car);
+            final CarStatus result = CarStatus.from(car);
             currentStatuses.add(result);
         }
-
         return new CarStatuses(currentStatuses);
     }
 
-    private CarStatus moveAndGetResult(Car car) {
-        car.move();
-        return CarStatus.from(car);
+    public CarStatuses filterHighestDistanceCars() {
+        final CarStatuses carStatuses = getCurrentCarStatuses();
+        return carStatuses.filterHighestDistanceCars();
     }
 }
