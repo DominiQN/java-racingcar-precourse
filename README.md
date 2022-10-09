@@ -25,7 +25,7 @@
     * Exception이 아닌 IllegalArgumentException, IllegalStateException 등과 같은 명확한 유형을 처리한다.
 
 * 자동차
-    * [ ] 자동차는 이름과 전진전략을 받아 생성된다.
+    * [x] 자동차는 이름과 전진전략을 받아 생성된다.
         * 이름은 5자 이하여야 한다.
         * 이름은 비어있지 않아야 한다.
     * [ ] 자동차는 전진할 수 있다.
