@@ -36,4 +36,19 @@ public class RacingCars {
             throw new IllegalArgumentException("경주할 자동차는 하나 이상 필요합니다!");
         }
     }
+
+    public CarStatuses moveAll() {
+        final List<CarStatus> currentStatuses = new ArrayList<>();
+        for (Car car : this.elements) {
+            final CarStatus result = moveAndGetResult(car);
+            currentStatuses.add(result);
+        }
+
+        return new CarStatuses(currentStatuses);
+    }
+
+    private CarStatus moveAndGetResult(Car car) {
+        car.move();
+        return CarStatus.from(car);
+    }
 }

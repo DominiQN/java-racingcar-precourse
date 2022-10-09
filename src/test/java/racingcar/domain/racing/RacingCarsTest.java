@@ -1,5 +1,6 @@
 package racingcar.domain.racing;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
@@ -10,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.NullSource;
-import racingcar.domain.AlwaysForwardStrategy;
+import racingcar.domain.Fixtures;
 import racingcar.domain.car.Car;
 import racingcar.domain.car.CarMovingStrategy;
 
@@ -35,9 +36,21 @@ class RacingCarsTest {
     @Test
     void createWithNamesAndStrategy() {
         final List<String> carNames = Arrays.asList("him", "her", "it");
-        final CarMovingStrategy strategy = new AlwaysForwardStrategy(1);
+        final CarMovingStrategy strategy = Fixtures.ALWAYS_FORWARD_ONE_STRATEGY;
         assertThatNoException().isThrownBy(() -> {
             final RacingCars cars = RacingCars.createdBy(carNames, strategy);
         });
+    }
+
+    @DisplayName("자동차들의 전체 주행 결과는 자동차의 이름 및 현재 위치를 반환한다.")
+    @Test
+    void name() {
+        final List<String> carNames = Arrays.asList("him", "her", "it");
+        final RacingCars cars = RacingCars.createdBy(carNames, Fixtures.ALWAYS_FORWARD_ONE_STRATEGY);
+        final CarStatuses expected = Fixtures.carStatusesOf(1, "him", "her", "it");
+
+        final CarStatuses actual = cars.moveAll();
+
+        assertThat(actual).isEqualTo(expected);
     }
 }

@@ -11,7 +11,7 @@ public class AlwaysForwardStrategy implements CarMovingStrategy {
     }
 
     public AlwaysForwardStrategy(int distanceAtOne) {
-        this(new Distance(1));
+        this(new Distance(distanceAtOne));
     }
 
     @Override

@@ -10,13 +10,14 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import racingcar.domain.AlwaysForwardStrategy;
+import racingcar.domain.Fixtures;
 
 public class CarTest {
     private CarMovingStrategy strategy;
 
     @BeforeEach
     void setUp() {
-        this.strategy = new AlwaysForwardStrategy(new Distance(1));
+        this.strategy = Fixtures.ALWAYS_FORWARD_ONE_STRATEGY;
     }
 
     @ParameterizedTest(name = "자동차 이름은 비어 있지 않아야 한다.")

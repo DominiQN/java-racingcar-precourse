@@ -12,4 +12,8 @@ public class Racing {
         this.racingCars = RacingCars.createdBy(carNames, carMovingStrategy);
         this.movingTrialCount = new MovingTrialCount(movingTrials);
     }
+
+    public CarStatuses raceOnce() {
+        return racingCars.moveAll();
+    }
 }
