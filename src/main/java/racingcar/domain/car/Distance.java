@@ -1,5 +1,7 @@
 package racingcar.domain.car;
 
+import static racingcar.utils.ValidationUtils.requireNotNull;
+
 import java.util.Objects;
 
 public class Distance {
@@ -30,5 +32,10 @@ public class Distance {
     @Override
     public int hashCode() {
         return Objects.hash(value);
+    }
+
+    public Distance plus(Distance other) {
+        requireNotNull(other, "Other distance must not be null!");
+        return new Distance(this.value + other.value);
     }
 }

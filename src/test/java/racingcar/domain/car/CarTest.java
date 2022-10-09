@@ -15,7 +15,7 @@ public class CarTest {
 
     @BeforeEach
     void setUp() {
-        this.strategy = new AlwaysForwardStrategy();
+        this.strategy = new AlwaysForwardStrategy(new Distance(1));
     }
 
     @ParameterizedTest(name = "자동차 이름은 비어 있지 않아야 한다.")
@@ -38,8 +38,7 @@ public class CarTest {
     @ParameterizedTest(name = "자동차를 생성할 때 주었던 이름을 알 수 있다.")
     @ValueSource(strings = {"Benz", "BMW"})
     void name(String name) {
-        final CarName givenName = new CarName(name);
-        final Car car = new Car(givenName, strategy);
+        final Car car = createCar(name);
         final CarName expected = new CarName(name);
 
         final CarName actual = car.getName();
@@ -49,11 +48,33 @@ public class CarTest {
     @DisplayName("자동차가 처음 생성되면 현재 위치는 0이다.")
     @Test
     void initialDistance() {
-        final CarName name = new CarName("mini");
-        final Car car = new Car(name, strategy);
+        final Car car = createCar("mini");
         final Distance expected = Distance.ZERO;
 
         final Distance actual = car.getDistanceFromStartingPoint();
         assertThat(actual).isEqualTo(expected);
+    }
+
+    @ParameterizedTest(name = "자동차는 전진전략대로 이동한다. 이동거리: {0}")
+    @ValueSource(ints = {0, 1})
+    void move(int givenDistance) {
+        final Distance distanceAtOnce = new Distance(givenDistance);
+        final CarMovingStrategy strategy = new AlwaysForwardStrategy(distanceAtOnce);
+        final Car car = createCar("mini", strategy);
+        final Distance expected = new Distance(givenDistance);
+
+        car.move();
+        final Distance actual = car.getDistanceFromStartingPoint();
+
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    private Car createCar(String name) {
+        return createCar(name, strategy);
+    }
+
+    private Car createCar(String name, CarMovingStrategy strategy) {
+        final CarName carName = new CarName(name);
+        return new Car(carName, strategy);
     }
 }

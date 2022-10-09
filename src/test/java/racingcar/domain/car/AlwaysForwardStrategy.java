@@ -1,11 +1,14 @@
 package racingcar.domain.car;
 
 class AlwaysForwardStrategy implements CarMovingStrategy {
+    private final Distance distanceAtOnce;
 
-    private static final int DISTANCE = 1;
+    public AlwaysForwardStrategy(Distance distanceAtOnce) {
+        this.distanceAtOnce = distanceAtOnce;
+    }
 
     @Override
-    public int move() {
-        return DISTANCE;
+    public Distance move() {
+        return distanceAtOnce;
     }
 }
