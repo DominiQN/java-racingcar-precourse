@@ -26,7 +26,7 @@ public class RacingTrialCounter {
         this.trialCount++;
     }
 
-    private boolean isReachingTrialLimit() {
+    public boolean isReachingTrialLimit() {
         return this.trialCount >= trialLimit;
     }
 }

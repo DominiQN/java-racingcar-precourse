@@ -17,4 +17,8 @@ public class Racing {
         racingTrialCounter.incrementTrialCount();
         return racingCars.moveAll();
     }
+
+    public boolean isFinished() {
+        return racingTrialCounter.isReachingTrialLimit();
+    }
 }

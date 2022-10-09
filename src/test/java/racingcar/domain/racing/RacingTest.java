@@ -4,12 +4,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static racingcar.domain.Utils.repeat;
 
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -78,5 +80,19 @@ class RacingTest {
                 () -> assertThat(actualOnce).isEqualTo(expectedOnce),
                 () -> assertThat(actualTwice).isEqualTo(expectedTwice)
         );
+    }
+
+    @ParameterizedTest(name = "경주 시도 횟수가 {0}이고 실제 {1}회 시도했을 때 경주가 종료되었는가: {2}")
+    @CsvSource({
+            "1, 0, false",
+            "1, 1, true"
+    })
+    void isFinished(int trialLimit, int repeatCount, boolean expected) {
+        final Racing racing = Fixtures.createRacing(trialLimit, "pobi", "crong");
+        repeat(repeatCount, racing::raceOnce);
+
+        final boolean actual = racing.isFinished();
+
+        assertThat(actual).isEqualTo(expected);
     }
 }
