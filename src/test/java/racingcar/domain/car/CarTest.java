@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -41,6 +43,17 @@ public class CarTest {
         final CarName expected = new CarName(name);
 
         final CarName actual = car.getName();
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @DisplayName("자동차가 처음 생성되면 현재 위치는 0이다.")
+    @Test
+    void initialDistance() {
+        final CarName name = new CarName("mini");
+        final Car car = new Car(name, strategy);
+        final Distance expected = Distance.ZERO;
+
+        final Distance actual = car.getDistanceFromStartingPoint();
         assertThat(actual).isEqualTo(expected);
     }
 }
