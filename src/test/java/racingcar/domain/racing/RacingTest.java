@@ -13,45 +13,28 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import racingcar.domain.Fixtures;
-import racingcar.domain.car.CarMovingStrategy;
 
 class RacingTest {
 
-    @ParameterizedTest(name = "경주할 자동차 이름 목록은 null이 아니어야 한다.")
+    @ParameterizedTest(name = "경주 자동차 목록은 null이 아니어야 한다.")
     @NullSource
-    void carNamesShouldNotBeNull(List<String> carNames) {
+    void carNamesShouldNotBeNull(RacingCars racingCars) {
         final int movingTrials = 1;
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> new Racing(carNames, movingTrials, Fixtures.ALWAYS_FORWARD_ONE_STRATEGY));
-    }
-
-    @ParameterizedTest(name = "경주할 자동차 이름 목록은 비어 있지 않아야 한다.")
-    @EmptySource
-    void carNamesShouldNotBeEmpty(List<String> carNames) {
-        final int movingTrials = 1;
-        assertThatIllegalArgumentException()
-                .isThrownBy(() -> new Racing(carNames, movingTrials, Fixtures.ALWAYS_FORWARD_ONE_STRATEGY));
+                .isThrownBy(() -> new Racing(racingCars, movingTrials))
+                .withMessage("The racing cars should not be null!");
     }
 
     @ParameterizedTest(name = "전진 시도 횟수는 양수여야 한다. 시도 횟수: {0}")
     @ValueSource(ints = {0, -1})
     void movingTrialsShouldBePositive(int movingTrials) {
         final List<String> carNames = Arrays.asList("pobi", "crong");
+        final RacingCars cars = RacingCars.createdBy(carNames, Fixtures.ALWAYS_FORWARD_ONE_STRATEGY);
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> new Racing(carNames, movingTrials, Fixtures.ALWAYS_FORWARD_ONE_STRATEGY));
-    }
-
-    @ParameterizedTest(name = "전진 전략은 null이 아니어야 한다.")
-    @NullSource
-    void carMovingStrategyShouldNotBeNull(CarMovingStrategy carMovingStrategy) {
-        final List<String> carNames = Arrays.asList("pobi", "crong");
-        final int movingTrials = 1;
-        assertThatIllegalArgumentException()
-                .isThrownBy(() -> new Racing(carNames, movingTrials, carMovingStrategy));
+                .isThrownBy(() -> new Racing(cars, movingTrials));
     }
 
     @DisplayName("생성 시 주어진 경주 시도 횟수를 초과하여 경기를 진행할 수 없다.")

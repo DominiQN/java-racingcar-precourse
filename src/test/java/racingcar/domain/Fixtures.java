@@ -10,6 +10,7 @@ import racingcar.domain.car.Distance;
 import racingcar.domain.racing.CarStatus;
 import racingcar.domain.racing.CarStatuses;
 import racingcar.domain.racing.Racing;
+import racingcar.domain.racing.RacingCars;
 
 public class Fixtures {
     public static CarMovingStrategy ALWAYS_FORWARD_ONE_STRATEGY = new AlwaysForwardStrategy(1);
@@ -30,7 +31,8 @@ public class Fixtures {
 
     public static Racing createRacing(int movingTrials, String... carNames) {
         final List<String> nameList = Arrays.asList(carNames);
-        return new Racing(nameList, movingTrials, Fixtures.ALWAYS_FORWARD_ONE_STRATEGY);
+        final RacingCars racingCars = RacingCars.createdBy(nameList, ALWAYS_FORWARD_ONE_STRATEGY);
+        return new Racing(racingCars, movingTrials);
     }
 
     public static Car createCar(String name, int distance) {
